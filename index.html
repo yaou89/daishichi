@@ -190,10 +190,9 @@
             }
         }
 
-        /* ── 修正部分 ── */
-        /* その他のメニュー部分のカード内の.infoの高さを固定して、文字下の余白をおすすめメニューと合わせる */
-        .scroll-container.other-menu .card .info {
-            min-height: 70px;  /* 必要に応じて値を調整してください */
+        /* 修正部分：その他のメニューのカード内の余白をおすすめメニューと揃える */
+        .other-menu-container .card .info {
+            min-height: 70px;  /* 必要に応じて調整 */
         }
     </style>
 </head>
@@ -253,41 +252,47 @@
         </div>
 
         <h2 class="section-title">その他のメニュー</h2>
-        <!-- ここに「other-menu」クラスを追加 -->
-        <div class="scroll-container other-menu">
-            <div class="card">
-                <img src="images/bento6.jpg" alt="弁当画像6" onclick="openModal(this.src, 'カレー弁当 - スパイシーな味わい！')">
-                <div class="info">
-                    <h3>カレー弁当</h3>
-                    <p>価格: 700円</p>
+        <!-- 2段表示用のコンテナ -->
+        <div class="other-menu-container">
+            <!-- 1段目の横スクロール -->
+            <div class="scroll-container">
+                <div class="card">
+                    <img src="images/bento6.jpg" alt="弁当画像6" onclick="openModal(this.src, 'カレー弁当 - スパイシーな味わい！')">
+                    <div class="info">
+                        <h3>カレー弁当</h3>
+                        <p>価格: 700円</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="images/bento7.jpg" alt="弁当画像7" onclick="openModal(this.src, 'チキン弁当 - ジューシーで美味しい！')">
+                    <div class="info">
+                        <h3>チキン弁当</h3>
+                        <p>価格: 850円</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="images/bento8.jpg" alt="弁当画像8" onclick="openModal(this.src, '焼肉弁当 - 満足感たっぷり！')">
+                    <div class="info">
+                        <h3>焼肉弁当</h3>
+                        <p>価格: 950円</p>
+                    </div>
                 </div>
             </div>
-            <div class="card">
-                <img src="images/bento7.jpg" alt="弁当画像7" onclick="openModal(this.src, 'チキン弁当 - ジューシーで美味しい！')">
-                <div class="info">
-                    <h3>チキン弁当</h3>
-                    <p>価格: 850円</p>
+            <!-- 2段目の横スクロール -->
+            <div class="scroll-container">
+                <div class="card">
+                    <img src="images/bento9.jpg" alt="弁当画像9" onclick="openModal(this.src, '魚弁当 - ヘルシーでおいしい！')">
+                    <div class="info">
+                        <h3>魚弁当</h3>
+                        <p>価格: 900円</p>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <img src="images/bento8.jpg" alt="弁当画像8" onclick="openModal(this.src, '焼肉弁当 - 満足感たっぷり！')">
-                <div class="info">
-                    <h3>焼肉弁当</h3>
-                    <p>価格: 950円</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="images/bento9.jpg" alt="弁当画像9" onclick="openModal(this.src, '魚弁当 - ヘルシーでおいしい！')">
-                <div class="info">
-                    <h3>魚弁当</h3>
-                    <p>価格: 900円</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="images/bento10.jpg" alt="弁当画像10" onclick="openModal(this.src, '唐揚げ弁当 - 子供も大好き！')">
-                <div class="info">
-                    <h3>唐揚げ弁当</h3>
-                    <p>価格: 750円</p>
+                <div class="card">
+                    <img src="images/bento10.jpg" alt="弁当画像10" onclick="openModal(this.src, '唐揚げ弁当 - 子供も大好き！')">
+                    <div class="info">
+                        <h3>唐揚げ弁当</h3>
+                        <p>価格: 750円</p>
+                    </div>
                 </div>
             </div>
         </div>
