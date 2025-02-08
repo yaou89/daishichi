@@ -19,30 +19,41 @@
             background-image: url('images/header-background.jpg');
             background-size: cover;
             background-position: center;
-            height: 150px; /* 縦幅を狭く調整 */
+            height: 150px;
         }
 
         .intro {
-            padding: 1.5rem; /* 表示欄を狭く調整 */
+            padding: 0.5rem 1rem; /* コンパクトに調整 */
             text-align: center;
             background-color: rgba(255, 244, 230, 0.8);
-            border-bottom: 1px solid #ddd;
         }
 
         .intro h2 {
-            font-size: 1.5rem; /* 文字サイズを小さく調整 */
+            font-size: 1.2rem; /* 文字サイズをさらに小さく調整 */
             color: #d96459;
+            margin-bottom: 0.5rem;
         }
 
         .intro p {
-            font-size: 0.9rem; /* 紹介文の文字サイズを小さく調整 */
-            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            margin: 0.3rem 0;
+        }
+
+        .intro .contact {
+            margin-top: 0.3rem; /* 間隔をさらに調整 */
+            font-size: 0.85rem;
+        }
+
+        .intro .contact a {
+            color: #d96459;
+            text-decoration: none;
+            font-weight: bold;
         }
 
         .section-title {
             text-align: center;
-            margin: 1.5rem 0 0.5rem; /* 上下の余白を狭く調整 */
-            font-size: 1.5rem; /* 見出しの文字サイズを小さく調整 */
+            margin: 1rem 0 0.5rem;
+            font-size: 1.5rem;
             color: #d96459;
         }
 
@@ -69,7 +80,7 @@
 
         .card {
             flex: 0 0 auto;
-            width: 300px;
+            width: calc(100% / 2 - 16px);
             background-color: rgba(255, 255, 255, 0.9);
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -93,30 +104,13 @@
 
         .card .info h3 {
             margin: 0;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: #d96459;
         }
 
         .card .info p {
             margin: 0.5rem 0;
-            font-size: 1.2rem;
-        }
-
-        .contact {
-            padding: 2rem;
-            text-align: center;
-            background-color: rgba(255, 244, 230, 0.8);
-            border-top: 1px solid #ddd;
-        }
-
-        .contact h2 {
-            font-size: 2rem;
-            color: #d96459;
-        }
-
-        .contact p {
-            margin-top: 1rem;
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         footer {
@@ -124,6 +118,11 @@
             padding: 1rem;
             background-color: #d96459;
             color: #fff;
+        }
+
+        .footer-content {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
         }
 
         /* Fullscreen Image Modal */
@@ -159,6 +158,12 @@
             font-weight: bold;
             cursor: pointer;
         }
+
+        @media (max-width: 768px) {
+            .card {
+                width: calc(100% - 16px);
+            }
+        }
     </style>
 </head>
 <body>
@@ -167,6 +172,8 @@
     <section class="intro">
         <h2>いらっしゃいませ！</h2>
         <p>大七弁当は街の老舗弁当屋として、毎日新鮮でおいしいお弁当を提供しています。お昼のお供にぜひどうぞ！</p>
+        <p class="contact">営業時間：9:00～20:00</p>
+        <p class="contact">ご問い合わせはこちら：<a href="tel:0312345678">03-1234-5678</a></p>
     </section>
 
     <main>
@@ -235,15 +242,11 @@
         </div>
     </main>
 
-    <section class="contact">
-        <h2>お問い合わせ・住所</h2>
-        <p>住所: 東京都中央区1-1-1<br>
-        電話番号: 03-1234-5678<br>
-        営業時間: 9:00～20:00</p>
-    </section>
-
     <footer>
         &copy; 2025 大七弁当
+        <div class="footer-content">
+            住所：東京都中央区1-1-1
+        </div>
     </footer>
 
     <!-- Modal for Fullscreen Image -->
