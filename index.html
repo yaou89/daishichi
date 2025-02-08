@@ -16,6 +16,7 @@
     }
 
     header {
+      position: relative; /* 動画の絶対配置用 */
       background-image: url('images/header-background.jpg');
       background-size: cover;
       background-position: center;
@@ -24,6 +25,7 @@
       justify-content: flex-end;
       align-items: center;
       padding: 0 1rem;
+      cursor: pointer; /* ヘッダークリックで動画再生するため */
     }
 
     .menu-toggle {
@@ -32,6 +34,19 @@
       border: none;
       color: white;
       cursor: pointer;
+      z-index: 2; /* 動画より前面に表示 */
+    }
+
+    /* スマホ表示時：三本線を大きく、角に寄せる */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 2rem;
+        padding: 10px;
+        margin: 0;
+      }
     }
 
     .nav-menu {
@@ -43,7 +58,7 @@
       right: 10px;
       width: 150px;
       border-radius: 8px;
-      z-index: 1000;
+      z-index: 2;
     }
 
     .nav-menu a {
@@ -150,7 +165,7 @@
       margin-top: 0.5rem;
     }
 
-    /* Fullscreen Image Modal */
+    /* モーダル（クリック時に表示されるlarge画像＆キャプション） */
     .modal {
       display: none;
       position: fixed;
@@ -165,11 +180,10 @@
       overflow: auto;
     }
 
-    /* modal-contentで画像とキャプションをグループ化 */
+    /* modal-contentで画像とキャプションをまとめる */
     .modal-content {
       position: relative;
       top: 35%;
-      /* 画面上部35%付近に表示（目線が上になるよう調整） */
       transform: translateY(-35%);
       display: inline-block;
       text-align: center;
@@ -213,13 +227,20 @@
   </style>
 </head>
 <body>
-  <header>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  <!-- ヘッダーにクリックイベントを付与 -->
+  <header onclick="playHeaderVideo()">
+    <!-- メニューアイコン。クリック時にstopPropagationしてヘッダークリックが発火しない -->
+    <button class="menu-toggle" onclick="toggleMenu(event)">☰</button>
     <nav class="nav-menu" id="navMenu">
       <a href="menu.html">歴史</a>
       <a href="about.html">お電話注文について</a>
       <a href="contact.html">会社概要</a>
     </nav>
+    <!-- ヘッダークリックで再生する動画。絶対配置でヘッダー内に収める -->
+    <video id="headerVideo" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; object-fit: cover;" muted playsinline>
+      <source src="video/header-video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
   </header>
 
   <section class="intro">
@@ -323,7 +344,7 @@
     </div>
   </footer>
 
-  <!-- モーダル部：画像とキャプションをまとめるために.modal-contentでラップ -->
+  <!-- モーダル部：画像とキャプションを.modal-contentでグループ化 -->
   <div id="imageModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
@@ -333,7 +354,11 @@
   </div>
 
   <script>
-    function toggleMenu() {
+    // メニュー切替時、クリックイベントがヘッダーにも伝播しないようにする
+    function toggleMenu(event) {
+      if (event) {
+        event.stopPropagation();
+      }
       const navMenu = document.getElementById('navMenu');
       navMenu.classList.toggle('show');
     }
@@ -352,6 +377,19 @@
     function closeModal() {
       const modal = document.getElementById('imageModal');
       modal.style.display = 'none';
+    }
+
+    // ヘッダークリックで動画を再生する
+    function playHeaderVideo() {
+      var video = document.getElementById('headerVideo');
+      if (video) {
+        video.style.display = 'block';
+        video.play();
+        // 再生終了時に非表示にする（必要に応じて）
+        video.onended = function() {
+          video.style.display = 'none';
+        }
+      }
     }
   </script>
 </body>
