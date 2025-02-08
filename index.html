@@ -189,6 +189,12 @@
                 width: calc(100% - 16px);
             }
         }
+
+        /* ── 修正部分 ── */
+        /* その他のメニュー部分のカード内の.infoの高さを固定して、文字下の余白をおすすめメニューと合わせる */
+        .scroll-container.other-menu .card .info {
+            min-height: 70px;  /* 必要に応じて値を調整してください */
+        }
     </style>
 </head>
 <body>
@@ -247,7 +253,8 @@
         </div>
 
         <h2 class="section-title">その他のメニュー</h2>
-        <div class="scroll-container">
+        <!-- ここに「other-menu」クラスを追加 -->
+        <div class="scroll-container other-menu">
             <div class="card">
                 <img src="images/bento6.jpg" alt="弁当画像6" onclick="openModal(this.src, 'カレー弁当 - スパイシーな味わい！')">
                 <div class="info">
