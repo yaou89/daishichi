@@ -30,25 +30,25 @@
         }
 
         .intro h2 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: #d96459;
         }
 
         .intro p {
-            font-size: 1rem;
+            font-size: 1.2rem;
             margin-top: 1rem;
         }
 
         .section-title {
             text-align: center;
             margin: 2rem 0 1rem;
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: #d96459;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 1段落に4つ表示 */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 自動調整でスマホ対応 */
             gap: 16px;
             padding: 2rem;
         }
@@ -60,27 +60,29 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             text-align: center;
+            padding: 1rem;
         }
 
         .card img {
             width: 100%;
             height: auto;
             cursor: pointer;
+            border-radius: 8px;
         }
 
         .card .info {
-            padding: 1rem;
+            padding: 0.5rem;
         }
 
         .card .info h3 {
             margin: 0;
-            font-size: 1.25rem;
+            font-size: 1.5rem; /* スマホで見やすく */
             color: #d96459;
         }
 
         .card .info p {
             margin: 0.5rem 0;
-            font-size: 0.9rem;
+            font-size: 1.2rem; /* スマホ向けに文字を大きく */
         }
 
         .contact {
@@ -91,13 +93,13 @@
         }
 
         .contact h2 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: #d96459;
         }
 
         .contact p {
             margin-top: 1rem;
-            font-size: 1rem;
+            font-size: 1.2rem;
         }
 
         footer {
@@ -139,6 +141,36 @@
             font-size: 30px;
             font-weight: bold;
             cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .intro h2 {
+                font-size: 1.8rem;
+            }
+
+            .intro p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .card .info h3 {
+                font-size: 1.2rem;
+            }
+
+            .card .info p {
+                font-size: 1rem;
+            }
+
+            .contact h2 {
+                font-size: 1.8rem;
+            }
+
+            .contact p {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -217,34 +249,4 @@
     </main>
 
     <section class="contact">
-        <h2>お問い合わせ・住所</h2>
-        <p>住所: 東京都中央区1-1-1<br>
-        電話番号: 03-1234-5678<br>
-        営業時間: 9:00～20:00</p>
-    </section>
-
-    <footer>
-        &copy; 2025 大七弁当
-    </footer>
-
-    <!-- Modal for Fullscreen Image -->
-    <div id="imageModal" class="modal">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <img id="modalImage" src="">
-    </div>
-
-    <script>
-        function openModal(src) {
-            const modal = document.getElementById('imageModal');
-            const modalImage = document.getElementById('modalImage');
-            modal.style.display = 'block';
-            modalImage.src = src;
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('imageModal');
-            modal.style.display = 'none';
-        }
-    </script>
-</body>
-</html>
+        <h2>お問い合わせ・住所</h
