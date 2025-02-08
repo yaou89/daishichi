@@ -9,14 +9,14 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-image: url('images/body-background.jpg'); /* ページ全体の背景画像 */
+            background-image: url('images/body-background.jpg');
             background-size: cover;
             background-position: center;
             color: #333;
         }
 
         header {
-            background-image: url('images/header-background.jpg'); /* タイトル背景画像 */
+            background-image: url('images/header-background.jpg');
             background-size: cover;
             background-position: center;
             height: 200px;
@@ -46,14 +46,30 @@
             color: #d96459;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 自動調整でスマホ対応 */
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
             gap: 16px;
             padding: 2rem;
+            scroll-snap-type: x mandatory;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #d96459;
+            border-radius: 8px;
+        }
+
+        .scroll-container::-webkit-scrollbar-track {
+            background: #f4f4f4;
         }
 
         .card {
+            flex: 0 0 auto;
+            width: 300px;
             background-color: rgba(255, 255, 255, 0.9);
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -61,6 +77,7 @@
             overflow: hidden;
             text-align: center;
             padding: 1rem;
+            scroll-snap-align: start;
         }
 
         .card img {
@@ -76,13 +93,13 @@
 
         .card .info h3 {
             margin: 0;
-            font-size: 1.5rem; /* スマホで見やすく */
+            font-size: 1.5rem;
             color: #d96459;
         }
 
         .card .info p {
             margin: 0.5rem 0;
-            font-size: 1.2rem; /* スマホ向けに文字を大きく */
+            font-size: 1.2rem;
         }
 
         .contact {
@@ -142,36 +159,6 @@
             font-weight: bold;
             cursor: pointer;
         }
-
-        @media (max-width: 600px) {
-            .intro h2 {
-                font-size: 1.8rem;
-            }
-
-            .intro p {
-                font-size: 1rem;
-            }
-
-            .section-title {
-                font-size: 1.8rem;
-            }
-
-            .card .info h3 {
-                font-size: 1.2rem;
-            }
-
-            .card .info p {
-                font-size: 1rem;
-            }
-
-            .contact h2 {
-                font-size: 1.8rem;
-            }
-
-            .contact p {
-                font-size: 1rem;
-            }
-        }
     </style>
 </head>
 <body>
@@ -184,30 +171,30 @@
 
     <main>
         <h2 class="section-title">おすすめメニュー</h2>
-        <div class="grid">
+        <div class="scroll-container">
             <div class="card">
-                <img src="images/bento1.jpg" alt="弁当画像1" onclick="openModal(this.src)">
+                <img src="images/bento1.jpg" alt="弁当画像1" onclick="openModal(this.src, 'images/bento1-large.jpg')">
                 <div class="info">
                     <h3>特製幕の内弁当</h3>
                     <p>価格: 800円</p>
                 </div>
             </div>
             <div class="card">
-                <img src="images/bento2.jpg" alt="弁当画像2" onclick="openModal(this.src)">
+                <img src="images/bento2.jpg" alt="弁当画像2" onclick="openModal(this.src, 'images/bento2-large.jpg')">
                 <div class="info">
                     <h3>日替わり弁当</h3>
                     <p>価格: 700円</p>
                 </div>
             </div>
             <div class="card">
-                <img src="images/bento3.jpg" alt="弁当画像3" onclick="openModal(this.src)">
+                <img src="images/bento3.jpg" alt="弁当画像3" onclick="openModal(this.src, 'images/bento3-large.jpg')">
                 <div class="info">
                     <h3>ヘルシー弁当</h3>
                     <p>価格: 750円</p>
                 </div>
             </div>
             <div class="card">
-                <img src="images/bento4.jpg" alt="弁当画像4" onclick="openModal(this.src)">
+                <img src="images/bento4.jpg" alt="弁当画像4" onclick="openModal(this.src, 'images/bento4-large.jpg')">
                 <div class="info">
                     <h3>おまかせ弁当</h3>
                     <p>価格: 850円</p>
@@ -216,30 +203,30 @@
         </div>
 
         <h2 class="section-title">その他のメニュー</h2>
-        <div class="grid">
+        <div class="scroll-container">
             <div class="card">
-                <img src="images/bento5.jpg" alt="弁当画像5" onclick="openModal(this.src)">
+                <img src="images/bento5.jpg" alt="弁当画像5" onclick="openModal(this.src, 'images/bento5-large.jpg')">
                 <div class="info">
                     <h3>デラックス弁当</h3>
                     <p>価格: 1000円</p>
                 </div>
             </div>
             <div class="card">
-                <img src="images/bento6.jpg" alt="弁当画像6" onclick="openModal(this.src)">
+                <img src="images/bento6.jpg" alt="弁当画像6" onclick="openModal(this.src, 'images/bento6-large.jpg')">
                 <div class="info">
                     <h3>カレー弁当</h3>
                     <p>価格: 700円</p>
                 </div>
             </div>
             <div class="card">
-                <img src="images/bento7.jpg" alt="弁当画像7" onclick="openModal(this.src)">
+                <img src="images/bento7.jpg" alt="弁当画像7" onclick="openModal(this.src, 'images/bento7-large.jpg')">
                 <div class="info">
                     <h3>チキン弁当</h3>
                     <p>価格: 850円</p>
                 </div>
             </div>
             <div class="card">
-                <img src="images/bento8.jpg" alt="弁当画像8" onclick="openModal(this.src)">
+                <img src="images/bento8.jpg" alt="弁当画像8" onclick="openModal(this.src, 'images/bento8-large.jpg')">
                 <div class="info">
                     <h3>焼肉弁当</h3>
                     <p>価格: 950円</p>
@@ -249,4 +236,34 @@
     </main>
 
     <section class="contact">
-        <h2>お問い合わせ・住所</h
+        <h2>お問い合わせ・住所</h2>
+        <p>住所: 東京都中央区1-1-1<br>
+        電話番号: 03-1234-5678<br>
+        営業時間: 9:00～20:00</p>
+    </section>
+
+    <footer>
+        &copy; 2025 大七弁当
+    </footer>
+
+    <!-- Modal for Fullscreen Image -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img id="modalImage" src="">
+    </div>
+
+    <script>
+        function openModal(src, largeSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImage.src = largeSrc || src;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
