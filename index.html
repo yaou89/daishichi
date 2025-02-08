@@ -20,16 +20,56 @@
             background-size: cover;
             background-position: center;
             height: 150px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .menu-toggle {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .nav-menu {
+            display: none;
+            flex-direction: column;
+            background-color: rgba(0, 0, 0, 0.8);
+            position: absolute;
+            top: 60px;
+            right: 10px;
+            width: 150px;
+            border-radius: 8px;
+            z-index: 1000;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            font-size: 1rem;
+            display: block;
+        }
+
+        .nav-menu a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-menu.show {
+            display: flex;
         }
 
         .intro {
-            padding: 0.5rem 1rem; /* コンパクトに調整 */
+            padding: 0.5rem 1rem;
             text-align: center;
             background-color: rgba(255, 244, 230, 0.8);
         }
 
         .intro h2 {
-            font-size: 1.2rem; /* 文字サイズをさらに小さく調整 */
+            font-size: 1.2rem;
             color: #d96459;
             margin-bottom: 0.5rem;
         }
@@ -87,21 +127,6 @@
             border-radius: 8px;
         }
 
-        .card .info {
-            padding: 0.5rem;
-        }
-
-        .card .info h3 {
-            margin: 0;
-            font-size: 1.2rem;
-            color: #d96459;
-        }
-
-        .card .info p {
-            margin: 0.5rem 0;
-            font-size: 1rem;
-        }
-
         footer {
             text-align: center;
             padding: 1rem;
@@ -123,8 +148,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.8);
             color: white;
             text-align: center;
         }
@@ -142,12 +166,12 @@
 
         .modal .caption {
             margin-top: 1rem;
-            font-size: 1.2rem;
+            font-size: 1rem;
+            color: white;
             position: absolute;
-            top: calc(50% + 200px); /* 画像の下に配置 */
+            top: calc(50% + 180px);
             left: 50%;
             transform: translateX(-50%);
-            color: #fff;
         }
 
         .modal .close {
@@ -168,7 +192,14 @@
     </style>
 </head>
 <body>
-    <header></header>
+    <header>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <nav class="nav-menu" id="navMenu">
+            <a href="menu.html">歴史</a>
+            <a href="about.html">お電話注文について</a>
+            <a href="contact.html">会社概要</a>
+        </nav>
+    </header>
 
     <section class="intro">
         <h2>いらっしゃいませ！</h2>
@@ -179,31 +210,38 @@
         <h2 class="section-title">おすすめメニュー</h2>
         <div class="scroll-container">
             <div class="card">
-                <img src="images/bento1.jpg" alt="弁当画像1" onclick="openModal(this.src, 'images/bento1-large.jpg', '特製幕の内弁当 - 人気No.1のお弁当！')">
+                <img src="images/bento1.jpg" alt="弁当画像1" onclick="openModal(this.src, '特製幕の内弁当 - 人気No.1のお弁当！')">
                 <div class="info">
                     <h3>特製幕の内弁当</h3>
                     <p>価格: 800円</p>
                 </div>
             </div>
             <div class="card">
-                <img src="images/bento2.jpg" alt="弁当画像2" onclick="openModal(this.src, 'images/bento2-large.jpg', '日替わり弁当 - 毎日新鮮な素材を使用！')">
+                <img src="images/bento2.jpg" alt="弁当画像2" onclick="openModal(this.src, '日替わり弁当 - 毎日新鮮な素材を使用！')">
                 <div class="info">
                     <h3>日替わり弁当</h3>
                     <p>価格: 700円</p>
                 </div>
             </div>
             <div class="card">
-                <img src="images/bento3.jpg" alt="弁当画像3" onclick="openModal(this.src, 'images/bento3-large.jpg', 'ヘルシー弁当 - 健康志向のあなたに！')">
+                <img src="images/bento3.jpg" alt="弁当画像3" onclick="openModal(this.src, 'ヘルシー弁当 - 健康志向のあなたに！')">
                 <div class="info">
                     <h3>ヘルシー弁当</h3>
                     <p>価格: 750円</p>
                 </div>
             </div>
             <div class="card">
-                <img src="images/bento4.jpg" alt="弁当画像4" onclick="openModal(this.src, 'images/bento4-large.jpg', 'おまかせ弁当 - 驚きの味わい！')">
+                <img src="images/bento4.jpg" alt="弁当画像4" onclick="openModal(this.src, 'おまかせ弁当 - 驚きの味わい！')">
                 <div class="info">
                     <h3>おまかせ弁当</h3>
                     <p>価格: 850円</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="images/bento5.jpg" alt="弁当画像5" onclick="openModal(this.src, 'デラックス弁当 - 豪華な一品！')">
+                <div class="info">
+                    <h3>デラックス弁当</h3>
+                    <p>価格: 1000円</p>
                 </div>
             </div>
         </div>
@@ -211,31 +249,38 @@
         <h2 class="section-title">その他のメニュー</h2>
         <div class="scroll-container">
             <div class="card">
-                <img src="images/bento5.jpg" alt="弁当画像5" onclick="openModal(this.src, 'images/bento5-large.jpg', 'デラックス弁当 - 豪華な一品！')">
-                <div class="info">
-                    <h3>デラックス弁当</h3>
-                    <p>価格: 1000円</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="images/bento6.jpg" alt="弁当画像6" onclick="openModal(this.src, 'images/bento6-large.jpg', 'カレー弁当 - スパイシーな味わい！')">
+                <img src="images/bento6.jpg" alt="弁当画像6" onclick="openModal(this.src, 'カレー弁当 - スパイシーな味わい！')">
                 <div class="info">
                     <h3>カレー弁当</h3>
                     <p>価格: 700円</p>
                 </div>
             </div>
             <div class="card">
-                <img src="images/bento7.jpg" alt="弁当画像7" onclick="openModal(this.src, 'images/bento7-large.jpg', 'チキン弁当 - ジューシーで美味しい！')">
+                <img src="images/bento7.jpg" alt="弁当画像7" onclick="openModal(this.src, 'チキン弁当 - ジューシーで美味しい！')">
                 <div class="info">
                     <h3>チキン弁当</h3>
                     <p>価格: 850円</p>
                 </div>
             </div>
             <div class="card">
-                <img src="images/bento8.jpg" alt="弁当画像8" onclick="openModal(this.src, 'images/bento8-large.jpg', '焼肉弁当 - 満足感たっぷり！')">
+                <img src="images/bento8.jpg" alt="弁当画像8" onclick="openModal(this.src, '焼肉弁当 - 満足感たっぷり！')">
                 <div class="info">
                     <h3>焼肉弁当</h3>
                     <p>価格: 950円</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="images/bento9.jpg" alt="弁当画像9" onclick="openModal(this.src, '魚弁当 - ヘルシーでおいしい！')">
+                <div class="info">
+                    <h3>魚弁当</h3>
+                    <p>価格: 900円</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="images/bento10.jpg" alt="弁当画像10" onclick="openModal(this.src, '唐揚げ弁当 - 子供も大好き！')">
+                <div class="info">
+                    <h3>唐揚げ弁当</h3>
+                    <p>価格: 750円</p>
                 </div>
             </div>
         </div>
@@ -250,7 +295,6 @@
         </div>
     </footer>
 
-    <!-- Modal for Fullscreen Image -->
     <div id="imageModal" class="modal">
         <span class="close" onclick="closeModal()">&times;</span>
         <img id="modalImage" src="">
@@ -258,13 +302,18 @@
     </div>
 
     <script>
-        function openModal(src, largeSrc, captionText) {
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('show');
+        }
+
+        function openModal(src, captionText) {
             const modal = document.getElementById('imageModal');
             const modalImage = document.getElementById('modalImage');
             const modalCaption = document.getElementById('modalCaption');
             modal.style.display = 'block';
-            modalImage.src = largeSrc || src;
-            modalCaption.textContent = captionText || '';
+            modalImage.src = src;
+            modalCaption.textContent = captionText;
         }
 
         function closeModal() {
