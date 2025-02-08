@@ -108,87 +108,54 @@
         }
 
         .card {
-            flex: 0 0 auto;
-            width: calc(100% / 2 - 16px);
-            background-color: rgba(255, 255, 255, 0.9);
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            text-align: center;
-            padding: 1rem;
-            scroll-snap-align: start;
-        }
+    flex: 0 0 auto;
+    width: calc(100% / 2 - 16px); /* 幅を2分割 */
+    height: 220px; /* 高さを調整して正方形に近づける */
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    padding: 0.5rem; /* パディングを小さく */
+    scroll-snap-align: start;
+}
 
-        .card img {
-            width: 100%;
-            height: auto;
-            cursor: pointer;
-            border-radius: 8px;
-        }
+.card img {
+    width: 100%;
+    height: 130px; /* 画像の高さを調整 */
+    object-fit: cover; /* 画像を縦横比を保って収める */
+    cursor: pointer;
+    border-radius: 8px;
+}
 
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background-color: #d96459;
-            color: #fff;
-        }
+.card .info {
+    padding: 0.3rem; /* 上下の余白を詰める */
+}
 
-        .footer-content {
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
+.card .info h3 {
+    margin: 0.2rem 0; /* 上下の隙間を詰める */
+    font-size: 1rem; /* フォントサイズを少し小さく */
+    color: #d96459;
+}
 
-        /* Fullscreen Image Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            text-align: center;
-        }
+.card .info p {
+    margin: 0.2rem 0; /* 上下の隙間を詰める */
+    font-size: 0.9rem; /* フォントサイズを調整 */
+}
 
-        .modal img {
-            display: block;
-            margin: auto;
-            max-width: 90%;
-            max-height: 70%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
+@media (max-width: 768px) {
+    .card {
+        width: calc(50% - 16px); /* スマホで幅を2分割 */
+        height: 200px; /* 高さをさらに調整 */
+    }
 
-        .modal .caption {
-            margin-top: 1rem;
-            font-size: 1rem;
-            color: white;
-            position: absolute;
-            top: calc(50% + 180px);
-            left: 50%;
-            transform: translateX(-50%);
-        }
+    .card img {
+        height: 110px; /* 画像の高さをスマホ用に調整 */
+    }
+}
 
-        .modal .close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: white;
-            font-size: 30px;
-            font-weight: bold;
-            cursor: pointer;
-        }
 
-        @media (max-width: 768px) {
-            .card {
-                width: calc(100% - 16px);
-            }
-        }
     </style>
 </head>
 <body>
