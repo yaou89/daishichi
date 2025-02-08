@@ -1,340 +1,358 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大七弁当</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: url('images/body-background.jpg');
-            background-size: cover;
-            background-position: center;
-            color: #333;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大七弁当</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('images/body-background.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #333;
+    }
 
-        header {
-            background-image: url('images/header-background.jpg');
-            background-size: cover;
-            background-position: center;
-            height: 150px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 0 1rem;
-        }
+    header {
+      background-image: url('images/header-background.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 150px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0 1rem;
+    }
 
-        .menu-toggle {
-            font-size: 1.5rem;
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-        }
+    .menu-toggle {
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
 
-        .nav-menu {
-            display: none;
-            flex-direction: column;
-            background-color: rgba(0, 0, 0, 0.8);
-            position: absolute;
-            top: 60px;
-            right: 10px;
-            width: 150px;
-            border-radius: 8px;
-            z-index: 1000;
-        }
+    .nav-menu {
+      display: none;
+      flex-direction: column;
+      background-color: rgba(0, 0, 0, 0.8);
+      position: absolute;
+      top: 60px;
+      right: 10px;
+      width: 150px;
+      border-radius: 8px;
+      z-index: 1000;
+    }
 
-        .nav-menu a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            font-size: 1rem;
-            display: block;
-        }
+    .nav-menu a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 15px;
+      font-size: 1rem;
+      display: block;
+    }
 
-        .nav-menu a:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
+    .nav-menu a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
 
-        .nav-menu.show {
-            display: flex;
-        }
+    .nav-menu.show {
+      display: flex;
+    }
 
-        .intro {
-            padding: 0.5rem 1rem;
-            text-align: center;
-            background-color: rgba(255, 244, 230, 0.8);
-        }
+    .intro {
+      padding: 0.5rem 1rem;
+      text-align: center;
+      background-color: rgba(255, 244, 230, 0.8);
+    }
 
-        .intro h2 {
-            font-size: 1.2rem;
-            color: #d96459;
-            margin-bottom: 0.5rem;
-        }
+    .intro h2 {
+      font-size: 1.2rem;
+      color: #d96459;
+      margin-bottom: 0.5rem;
+    }
 
-        .intro p {
-            font-size: 0.85rem;
-            margin: 0.3rem 0;
-        }
+    .intro p {
+      font-size: 0.85rem;
+      margin: 0.3rem 0;
+    }
 
-        .section-title {
-            text-align: center;
-            margin: 1rem 0 0.5rem;
-            font-size: 1.5rem;
-            color: #d96459;
-        }
+    .section-title {
+      text-align: center;
+      margin: 1rem 0 0.5rem;
+      font-size: 1.5rem;
+      color: #d96459;
+    }
 
-        .scroll-container {
-            display: flex;
-            overflow-x: auto;
-            gap: 16px;
-            padding: 2rem;
-            scroll-snap-type: x mandatory;
-        }
+    /* 上下余白を少し狭める */
+    .scroll-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 16px;
+      padding: 1rem 2rem; /* 縦:1rem、横:2rem */
+      scroll-snap-type: x mandatory;
+    }
 
-        .scroll-container::-webkit-scrollbar {
-            height: 8px;
-        }
+    .scroll-container::-webkit-scrollbar {
+      height: 8px;
+    }
 
-        .scroll-container::-webkit-scrollbar-thumb {
-            background: #d96459;
-            border-radius: 8px;
-        }
+    .scroll-container::-webkit-scrollbar-thumb {
+      background: #d96459;
+      border-radius: 8px;
+    }
 
-        .scroll-container::-webkit-scrollbar-track {
-            background: #f4f4f4;
-        }
+    .scroll-container::-webkit-scrollbar-track {
+      background: #f4f4f4;
+    }
 
-        .card {
-            flex: 0 0 auto;
-            width: calc(100% / 2 - 16px);
-            background-color: rgba(255, 255, 255, 0.9);
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            text-align: center;
-            padding: 1rem;
-            scroll-snap-align: start;
-        }
+    .card {
+      flex: 0 0 auto;
+      width: calc(100% / 2 - 16px);
+      background-color: rgba(255, 255, 255, 0.9);
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      text-align: center;
+      padding: 1rem;
+      scroll-snap-align: start;
+    }
 
-        .card img {
-            width: 100%;
-            height: auto;
-            cursor: pointer;
-            border-radius: 8px;
-        }
+    .card img {
+      width: 100%;
+      height: auto;
+      cursor: pointer;
+      border-radius: 8px;
+    }
 
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background-color: #d96459;
-            color: #fff;
-        }
+    /* 画像下のテキストの行間・余白を縮める */
+    .card .info h3 {
+      margin: 0.2rem 0 0.1rem;
+      font-size: 1.1rem;
+    }
+    .card .info p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
 
-        .footer-content {
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #d96459;
+      color: #fff;
+    }
 
-        /* Fullscreen Image Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            text-align: center;
-        }
+    .footer-content {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
 
-        .modal img {
-            display: block;
-            margin: auto;
-            max-width: 90%;
-            max-height: 70%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
+    /* Fullscreen Image Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      text-align: center;
+      overflow: auto;
+    }
 
-        .modal .caption {
-            margin-top: 1rem;
-            font-size: 1rem;
-            color: white;
-            position: absolute;
-            /* 修正：画像に近づけるためtopのオフセットを縮小 */
-            top: calc(50% + 120px);
-            left: 50%;
-            transform: translateX(-50%);
-        }
+    /* modal-contentで画像とキャプションをグループ化 */
+    .modal-content {
+      position: relative;
+      top: 35%;
+      /* 画面上部35%付近に表示（目線が上になるよう調整） */
+      transform: translateY(-35%);
+      display: inline-block;
+      text-align: center;
+    }
 
-        .modal .close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: white;
-            font-size: 30px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+    .modal-content img {
+      max-width: 90%;
+      max-height: 70vh;
+      border-radius: 8px;
+    }
 
-        @media (max-width: 768px) {
-            .card {
-                width: calc(100% - 16px);
-            }
-        }
+    .modal-content .caption {
+      margin-top: 10px;
+      font-size: 1rem;
+      color: white;
+    }
 
-        /* その他のメニューのカード内の余白をおすすめメニューと揃える */
-        .other-menu-container .card .info {
-            min-height: 70px;  /* 必要に応じて調整 */
-        }
-    </style>
+    .modal .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .card {
+        width: calc(100% - 16px);
+      }
+    }
+
+    /* その他のメニュー：1段目と2段目の隙間を縮める */
+    .other-menu-container .scroll-container:first-child {
+      padding-bottom: 0;
+    }
+    .other-menu-container .scroll-container:last-child {
+      padding-top: 0;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-        <nav class="nav-menu" id="navMenu">
-            <a href="menu.html">歴史</a>
-            <a href="about.html">お電話注文について</a>
-            <a href="contact.html">会社概要</a>
-        </nav>
-    </header>
+  <header>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav class="nav-menu" id="navMenu">
+      <a href="menu.html">歴史</a>
+      <a href="about.html">お電話注文について</a>
+      <a href="contact.html">会社概要</a>
+    </nav>
+  </header>
 
-    <section class="intro">
-        <h2>いらっしゃいませ！</h2>
-        <p>大七弁当は街の老舗弁当屋として、毎日新鮮でおいしいお弁当を提供しています。お昼のお供にぜひどうぞ！</p>
-    </section>
+  <section class="intro">
+    <h2>いらっしゃいませ！</h2>
+    <p>大七弁当は街の老舗弁当屋として、毎日新鮮でおいしいお弁当を提供しています。お昼のお供にぜひどうぞ！</p>
+  </section>
 
-    <main>
-        <h2 class="section-title">おすすめメニュー</h2>
-        <div class="scroll-container">
-            <div class="card">
-                <img src="images/bento1.jpg" alt="弁当画像1" onclick="openModal(this.src, '特製幕の内弁当 - 人気No.1のお弁当！')">
-                <div class="info">
-                    <h3>特製幕の内弁当</h3>
-                    <p>価格: 800円</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="images/bento2.jpg" alt="弁当画像2" onclick="openModal(this.src, '日替わり弁当 - 毎日新鮮な素材を使用！')">
-                <div class="info">
-                    <h3>日替わり弁当</h3>
-                    <p>価格: 700円</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="images/bento3.jpg" alt="弁当画像3" onclick="openModal(this.src, 'ヘルシー弁当 - 健康志向のあなたに！')">
-                <div class="info">
-                    <h3>ヘルシー弁当</h3>
-                    <p>価格: 750円</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="images/bento4.jpg" alt="弁当画像4" onclick="openModal(this.src, 'おまかせ弁当 - 驚きの味わい！')">
-                <div class="info">
-                    <h3>おまかせ弁当</h3>
-                    <p>価格: 850円</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="images/bento5.jpg" alt="弁当画像5" onclick="openModal(this.src, 'デラックス弁当 - 豪華な一品！')">
-                <div class="info">
-                    <h3>デラックス弁当</h3>
-                    <p>価格: 1000円</p>
-                </div>
-            </div>
+  <main>
+    <h2 class="section-title">おすすめメニュー</h2>
+    <div class="scroll-container">
+      <div class="card">
+        <img src="images/bento1.jpg" alt="弁当画像1" onclick="openModal(this.src, '特製幕の内弁当 - 人気No.1のお弁当！')">
+        <div class="info">
+          <h3>特製幕の内弁当</h3>
+          <p>価格: 800円</p>
         </div>
-
-        <h2 class="section-title">その他のメニュー</h2>
-        <!-- 2段表示用のコンテナ -->
-        <div class="other-menu-container">
-            <!-- 1段目の横スクロール -->
-            <div class="scroll-container">
-                <div class="card">
-                    <img src="images/bento6.jpg" alt="弁当画像6" onclick="openModal(this.src, 'カレー弁当 - スパイシーな味わい！')">
-                    <div class="info">
-                        <h3>カレー弁当</h3>
-                        <p>価格: 700円</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="images/bento7.jpg" alt="弁当画像7" onclick="openModal(this.src, 'チキン弁当 - ジューシーで美味しい！')">
-                    <div class="info">
-                        <h3>チキン弁当</h3>
-                        <p>価格: 850円</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="images/bento8.jpg" alt="弁当画像8" onclick="openModal(this.src, '焼肉弁当 - 満足感たっぷり！')">
-                    <div class="info">
-                        <h3>焼肉弁当</h3>
-                        <p>価格: 950円</p>
-                    </div>
-                </div>
-            </div>
-            <!-- 2段目の横スクロール -->
-            <div class="scroll-container">
-                <div class="card">
-                    <img src="images/bento9.jpg" alt="弁当画像9" onclick="openModal(this.src, '魚弁当 - ヘルシーでおいしい！')">
-                    <div class="info">
-                        <h3>魚弁当</h3>
-                        <p>価格: 900円</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="images/bento10.jpg" alt="弁当画像10" onclick="openModal(this.src, '唐揚げ弁当 - 子供も大好き！')">
-                    <div class="info">
-                        <h3>唐揚げ弁当</h3>
-                        <p>価格: 750円</p>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="card">
+        <img src="images/bento2.jpg" alt="弁当画像2" onclick="openModal(this.src, '日替わり弁当 - 毎日新鮮な素材を使用！')">
+        <div class="info">
+          <h3>日替わり弁当</h3>
+          <p>価格: 700円</p>
         </div>
-    </main>
-
-    <footer>
-        &copy; 2025 大七弁当
-        <div class="footer-content">
-            住所：東京都中央区1-1-1<br>
-            営業時間：9:00～20:00<br>
-            お問い合わせ：<a href="tel:0312345678">03-1234-5678</a>
+      </div>
+      <div class="card">
+        <img src="images/bento3.jpg" alt="弁当画像3" onclick="openModal(this.src, 'ヘルシー弁当 - 健康志向のあなたに！')">
+        <div class="info">
+          <h3>ヘルシー弁当</h3>
+          <p>価格: 750円</p>
         </div>
-    </footer>
-
-    <div id="imageModal" class="modal">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <img id="modalImage" src="">
-        <div class="caption" id="modalCaption"></div>
+      </div>
+      <div class="card">
+        <img src="images/bento4.jpg" alt="弁当画像4" onclick="openModal(this.src, 'おまかせ弁当 - 驚きの味わい！')">
+        <div class="info">
+          <h3>おまかせ弁当</h3>
+          <p>価格: 850円</p>
+        </div>
+      </div>
+      <div class="card">
+        <img src="images/bento5.jpg" alt="弁当画像5" onclick="openModal(this.src, 'デラックス弁当 - 豪華な一品！')">
+        <div class="info">
+          <h3>デラックス弁当</h3>
+          <p>価格: 1000円</p>
+        </div>
+      </div>
     </div>
 
-    <script>
-        function toggleMenu() {
-            const navMenu = document.getElementById('navMenu');
-            navMenu.classList.toggle('show');
-        }
+    <h2 class="section-title">その他のメニュー</h2>
+    <!-- 2段表示用のコンテナ -->
+    <div class="other-menu-container">
+      <!-- 1段目の横スクロール -->
+      <div class="scroll-container">
+        <div class="card">
+          <img src="images/bento6.jpg" alt="弁当画像6" onclick="openModal(this.src, 'カレー弁当 - スパイシーな味わい！')">
+          <div class="info">
+            <h3>カレー弁当</h3>
+            <p>価格: 700円</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="images/bento7.jpg" alt="弁当画像7" onclick="openModal(this.src, 'チキン弁当 - ジューシーで美味しい！')">
+          <div class="info">
+            <h3>チキン弁当</h3>
+            <p>価格: 850円</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="images/bento8.jpg" alt="弁当画像8" onclick="openModal(this.src, '焼肉弁当 - 満足感たっぷり！')">
+          <div class="info">
+            <h3>焼肉弁当</h3>
+            <p>価格: 950円</p>
+          </div>
+        </div>
+      </div>
+      <!-- 2段目の横スクロール -->
+      <div class="scroll-container">
+        <div class="card">
+          <img src="images/bento9.jpg" alt="弁当画像9" onclick="openModal(this.src, '魚弁当 - ヘルシーでおいしい！')">
+          <div class="info">
+            <h3>魚弁当</h3>
+            <p>価格: 900円</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="images/bento10.jpg" alt="弁当画像10" onclick="openModal(this.src, '唐揚げ弁当 - 子供も大好き！')">
+          <div class="info">
+            <h3>唐揚げ弁当</h3>
+            <p>価格: 750円</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 
-        function openModal(src, captionText) {
-            const modal = document.getElementById('imageModal');
-            const modalImage = document.getElementById('modalImage');
-            const modalCaption = document.getElementById('modalCaption');
-            // 元の画像パスの拡張子の前に「-large」を追加したパスに変更
-            var largeSrc = src.replace(/(\.[^.]+)$/, "-large$1");
-            modal.style.display = 'block';
-            modalImage.src = largeSrc;
-            modalCaption.textContent = captionText;
-        }
+  <footer>
+    &copy; 2025 大七弁当
+    <div class="footer-content">
+      住所：東京都中央区1-1-1<br>
+      営業時間：9:00～20:00<br>
+      お問い合わせ：<a href="tel:0312345678">03-1234-5678</a>
+    </div>
+  </footer>
 
-        function closeModal() {
-            const modal = document.getElementById('imageModal');
-            modal.style.display = 'none';
-        }
-    </script>
+  <!-- モーダル部：画像とキャプションをまとめるために.modal-contentでラップ -->
+  <div id="imageModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <img id="modalImage" src="">
+      <div class="caption" id="modalCaption"></div>
+    </div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const navMenu = document.getElementById('navMenu');
+      navMenu.classList.toggle('show');
+    }
+
+    function openModal(src, captionText) {
+      const modal = document.getElementById('imageModal');
+      const modalImage = document.getElementById('modalImage');
+      const modalCaption = document.getElementById('modalCaption');
+      // 拡張子直前に「-large」を追加したパスに変換
+      var largeSrc = src.replace(/(\.[^.]+)$/, "-large$1");
+      modal.style.display = 'block';
+      modalImage.src = largeSrc;
+      modalCaption.textContent = captionText;
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('imageModal');
+      modal.style.display = 'none';
+    }
+  </script>
 </body>
 </html>
