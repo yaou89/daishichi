@@ -39,17 +39,6 @@
             margin: 0.3rem 0;
         }
 
-        .intro .contact {
-            margin-top: 0.3rem; /* 間隔をさらに調整 */
-            font-size: 0.85rem;
-        }
-
-        .intro .contact a {
-            color: #d96459;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
         .section-title {
             text-align: center;
             margin: 1rem 0 0.5rem;
@@ -136,17 +125,22 @@
             height: 100%;
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            text-align: center;
+            padding-top: 2rem;
         }
 
         .modal img {
             display: block;
             margin: auto;
             max-width: 90%;
-            max-height: 90%;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            max-height: 70%;
+            position: relative;
+        }
+
+        .modal .caption {
+            margin-top: 1rem;
+            font-size: 1.2rem;
         }
 
         .modal .close {
@@ -172,71 +166,23 @@
     <section class="intro">
         <h2>いらっしゃいませ！</h2>
         <p>大七弁当は街の老舗弁当屋として、毎日新鮮でおいしいお弁当を提供しています。お昼のお供にぜひどうぞ！</p>
-        <p class="contact">営業時間：9:00～20:00</p>
-        <p class="contact">ご問い合わせはこちら：<a href="tel:0312345678">03-1234-5678</a></p>
     </section>
 
     <main>
         <h2 class="section-title">おすすめメニュー</h2>
         <div class="scroll-container">
             <div class="card">
-                <img src="images/bento1.jpg" alt="弁当画像1" onclick="openModal(this.src, 'images/bento1-large.jpg')">
+                <img src="images/bento1.jpg" alt="弁当画像1" onclick="openModal(this.src, 'images/bento1-large.jpg', '特製幕の内弁当 - 人気No.1のお弁当！')">
                 <div class="info">
                     <h3>特製幕の内弁当</h3>
                     <p>価格: 800円</p>
                 </div>
             </div>
             <div class="card">
-                <img src="images/bento2.jpg" alt="弁当画像2" onclick="openModal(this.src, 'images/bento2-large.jpg')">
+                <img src="images/bento2.jpg" alt="弁当画像2" onclick="openModal(this.src, 'images/bento2-large.jpg', '日替わり弁当 - 毎日新鮮な素材を使用！')">
                 <div class="info">
                     <h3>日替わり弁当</h3>
                     <p>価格: 700円</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="images/bento3.jpg" alt="弁当画像3" onclick="openModal(this.src, 'images/bento3-large.jpg')">
-                <div class="info">
-                    <h3>ヘルシー弁当</h3>
-                    <p>価格: 750円</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="images/bento4.jpg" alt="弁当画像4" onclick="openModal(this.src, 'images/bento4-large.jpg')">
-                <div class="info">
-                    <h3>おまかせ弁当</h3>
-                    <p>価格: 850円</p>
-                </div>
-            </div>
-        </div>
-
-        <h2 class="section-title">その他のメニュー</h2>
-        <div class="scroll-container">
-            <div class="card">
-                <img src="images/bento5.jpg" alt="弁当画像5" onclick="openModal(this.src, 'images/bento5-large.jpg')">
-                <div class="info">
-                    <h3>デラックス弁当</h3>
-                    <p>価格: 1000円</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="images/bento6.jpg" alt="弁当画像6" onclick="openModal(this.src, 'images/bento6-large.jpg')">
-                <div class="info">
-                    <h3>カレー弁当</h3>
-                    <p>価格: 700円</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="images/bento7.jpg" alt="弁当画像7" onclick="openModal(this.src, 'images/bento7-large.jpg')">
-                <div class="info">
-                    <h3>チキン弁当</h3>
-                    <p>価格: 850円</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="images/bento8.jpg" alt="弁当画像8" onclick="openModal(this.src, 'images/bento8-large.jpg')">
-                <div class="info">
-                    <h3>焼肉弁当</h3>
-                    <p>価格: 950円</p>
                 </div>
             </div>
         </div>
@@ -245,7 +191,9 @@
     <footer>
         &copy; 2025 大七弁当
         <div class="footer-content">
-            住所：東京都中央区1-1-1
+            住所：東京都中央区1-1-1<br>
+            営業時間：9:00～20:00<br>
+            お問い合わせ：<a href="tel:0312345678">03-1234-5678</a>
         </div>
     </footer>
 
@@ -253,14 +201,17 @@
     <div id="imageModal" class="modal">
         <span class="close" onclick="closeModal()">&times;</span>
         <img id="modalImage" src="">
+        <div class="caption" id="modalCaption"></div>
     </div>
 
     <script>
-        function openModal(src, largeSrc) {
+        function openModal(src, largeSrc, captionText) {
             const modal = document.getElementById('imageModal');
             const modalImage = document.getElementById('modalImage');
+            const modalCaption = document.getElementById('modalCaption');
             modal.style.display = 'block';
             modalImage.src = largeSrc || src;
+            modalCaption.textContent = captionText || '';
         }
 
         function closeModal() {
