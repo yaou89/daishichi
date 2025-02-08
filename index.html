@@ -127,7 +127,6 @@
             background-color: rgba(0, 0, 0, 0.9);
             color: white;
             text-align: center;
-            padding-top: 2rem;
         }
 
         .modal img {
@@ -135,12 +134,20 @@
             margin: auto;
             max-width: 90%;
             max-height: 70%;
-            position: relative;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .modal .caption {
             margin-top: 1rem;
             font-size: 1.2rem;
+            position: absolute;
+            top: calc(50% + 200px); /* 画像の下に配置 */
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
         }
 
         .modal .close {
@@ -183,6 +190,52 @@
                 <div class="info">
                     <h3>日替わり弁当</h3>
                     <p>価格: 700円</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="images/bento3.jpg" alt="弁当画像3" onclick="openModal(this.src, 'images/bento3-large.jpg', 'ヘルシー弁当 - 健康志向のあなたに！')">
+                <div class="info">
+                    <h3>ヘルシー弁当</h3>
+                    <p>価格: 750円</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="images/bento4.jpg" alt="弁当画像4" onclick="openModal(this.src, 'images/bento4-large.jpg', 'おまかせ弁当 - 驚きの味わい！')">
+                <div class="info">
+                    <h3>おまかせ弁当</h3>
+                    <p>価格: 850円</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">その他のメニュー</h2>
+        <div class="scroll-container">
+            <div class="card">
+                <img src="images/bento5.jpg" alt="弁当画像5" onclick="openModal(this.src, 'images/bento5-large.jpg', 'デラックス弁当 - 豪華な一品！')">
+                <div class="info">
+                    <h3>デラックス弁当</h3>
+                    <p>価格: 1000円</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="images/bento6.jpg" alt="弁当画像6" onclick="openModal(this.src, 'images/bento6-large.jpg', 'カレー弁当 - スパイシーな味わい！')">
+                <div class="info">
+                    <h3>カレー弁当</h3>
+                    <p>価格: 700円</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="images/bento7.jpg" alt="弁当画像7" onclick="openModal(this.src, 'images/bento7-large.jpg', 'チキン弁当 - ジューシーで美味しい！')">
+                <div class="info">
+                    <h3>チキン弁当</h3>
+                    <p>価格: 850円</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="images/bento8.jpg" alt="弁当画像8" onclick="openModal(this.src, 'images/bento8-large.jpg', '焼肉弁当 - 満足感たっぷり！')">
+                <div class="info">
+                    <h3>焼肉弁当</h3>
+                    <p>価格: 950円</p>
                 </div>
             </div>
         </div>
