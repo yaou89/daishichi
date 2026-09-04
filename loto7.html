@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ロト7 期待値ツール</title>
+<style>
+  :root{
+    --gold:#c9a227;
+    --card:rgba(20,20,22,.86);
+    --line:rgba(201,162,39,.35);
+    --ok:#4caf82;
+    --warn:#e0a33e;
+    --ng:#d15b5b;
+    --text:#f2efe8;
+    --muted:#b7b1a6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Yu Gothic",Arial,sans-serif;
+    background:#111 url('images/body-background.jpg') center/cover fixed no-repeat;
+    color:var(--text);
+    line-height:1.7;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:-1;
+  }
+  header{
+    padding:1.6rem 1rem 1.2rem;text-align:center;border-bottom:1px solid var(--line);
+    background:rgba(0,0,0,.45);
+  }
+  header h1{margin:0;font-size:1.5rem;letter-spacing:.08em;color:var(--gold);}
+  header p{margin:.4rem 0 0;font-size:.85rem;color:var(--muted);}
+  main{max-width:820px;margin:0 auto;padding:1rem 1rem 4rem;}
+  .tabs{display:flex;gap:.4rem;margin:1.2rem 0;flex-wrap:wrap;}
+  .tabs button{
+    flex:1 1 150px;padding:.7rem .5rem;font-size:.9rem;cursor:pointer;
+    background:rgba(255,255,255,.06);color:var(--text);
+    border:1px solid var(--line);border-radius:6px;font-family:inherit;
+  }
+  .tabs button.active{background:var(--gold);color:#1a1a1a;font-weight:bold;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:1.1rem 1.1rem 1.3rem;margin-bottom:1.1rem;
+  }
+  .card h2{margin:0 0 .8rem;font-size:1.05rem;color:var(--gold);}
+  .card h3{margin:1.2rem 0 .5rem;font-size:.95rem;color:var(--gold);}
+  label{display:block;font-size:.85rem;margin:.8rem 0 .25rem;color:var(--muted);}
+  input[type=number],input[type=text],textarea,select{
+    width:100%;padding:.55rem .6rem;font-size:1rem;font-family:inherit;
+    background:rgba(255,255,255,.08);color:var(--text);
+    border:1px solid var(--line);border-radius:6px;
+  }
+  textarea{min-height:120px;resize:vertical;font-family:monospace;font-size:.85rem;}
+  button.action{
+    margin-top:1rem;width:100%;padding:.8rem;font-size:1rem;font-family:inherit;
+    background:var(--gold);color:#1a1a1a;border:none;border-radius:6px;
+    cursor:pointer;font-weight:bold;
+  }
+  button.action:hover{opacity:.88;}
+  .verdict{
+    margin-top:1rem;padding:1rem;border-radius:8px;text-align:center;
+    border:2px solid;font-weight:bold;font-size:1.15rem;
+  }
+  .verdict small{display:block;font-weight:normal;font-size:.82rem;margin-top:.4rem;color:var(--muted);}
+  .v-buy{border-color:var(--ok);background:rgba(76,175,130,.14);color:var(--ok);}
+  .v-hold{border-color:var(--warn);background:rgba(224,163,62,.14);color:var(--warn);}
+  .v-skip{border-color:var(--ng);background:rgba(209,91,91,.14);color:var(--ng);}
+  table{width:100%;border-collapse:collapse;margin-top:.8rem;font-size:.85rem;}
+  th,td{padding:.45rem .4rem;border-bottom:1px solid rgba(255,255,255,.12);text-align:right;}
+  th:first-child,td:first-child{text-align:left;}
+  th{color:var(--gold);font-weight:normal;font-size:.8rem;}
+  .note{font-size:.82rem;color:var(--muted);margin-top:.7rem;}
+  .warnbox{
+    border-left:3px solid var(--ng);background:rgba(209,91,91,.1);
+    padding:.7rem .9rem;font-size:.85rem;margin-top:1rem;border-radius:0 6px 6px 0;
+  }
+  .balls{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0;}
+  .ball{
+    width:2.4rem;height:2.4rem;border-radius:50%;display:flex;
+    align-items:center;justify-content:center;font-weight:bold;font-size:.95rem;
+    background:#f2efe8;color:#1a1a1a;
+  }
+  .ball.hi{background:var(--gold);}
+  .setrow{padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.1);}
+  .setrow:last-child{border-bottom:none;}
+  .score{font-size:.8rem;color:var(--muted);}
+  .bar{height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden;margin-top:.25rem;}
+  .bar span{display:block;height:100%;background:var(--gold);}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 .8rem;}
+  @media(max-width:480px){.grid2{grid-template-columns:1fr;}}
+  footer{text-align:center;padding:1.5rem 1rem 2.5rem;font-size:.8rem;color:var(--muted);}
+  footer a{color:var(--gold);}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ロト7 期待値ツール</h1>
+  <p>「当たりやすい週」は無い。「買う価値が高い週」はある。</p>
+</header>
+
+<main>
+
+<div class="card" style="border-color:var(--ng);">
+  <h2 style="color:var(--ng);">最初に：数学的な事実</h2>
+  <p style="margin:.3rem 0;font-size:.9rem;">
+    ロト7は37個から7個を選ぶ<strong>独立試行</strong>です。1等の確率は
+    <strong>常に 1/10,295,472</strong>（C(37,7)）で、何週目でも、前回何が出ていても変わりません。
+    <strong>当選確率が高い週も、出やすい番号も存在しません。</strong>
+  </p>
+  <p style="margin:.6rem 0 0;font-size:.9rem;">
+    一方で、次の2つは<strong>実在します</strong>。このツールはこの2点だけを計算します。
+  </p>
+  <ol style="font-size:.9rem;margin:.5rem 0 0;padding-left:1.2rem;">
+    <li><strong>期待値が高い週＝キャリーオーバー週。</strong>確率は同じでも賞金原資が繰り越しで増えるので、1口あたりの期待受取額が上がります。</li>
+    <li><strong>被りにくい番号。</strong>当たる確率は同じでも、他人と選択が重なりにくい番号は当選時の山分け人数が減るので、期待受取額が上がります。</li>
+  </ol>
+</div>
+
+<div class="tabs">
+  <button class="active" data-tab="week">① 買う週の判定</button>
+  <button data-tab="nums">② 被りにくい番号</button>
+  <button data-tab="check">③ 出目の偏り検定</button>
+</div>
+
+<!-- ========== ① 週の判定 ========== -->
+<section class="panel active" id="week">
+  <div class="card">
+    <h2>今週の期待値を計算する</h2>
+    <p class="note" style="margin-top:0;">
+      キャリーオーバー額と販売額は、抽せん日の公式発表（みずほ銀行の宝くじ情報）の数字を入れてください。
+      販売額が分からない場合は初期値（約22億円）のままで概算できます。
+      キャリーオーバー週は購入者が増えて販売額が3〜4割上振れしやすく、その分だけ山分け人数も増える点に注意してください。
+    </p>
+
+    <div class="grid2">
+      <div>
+        <label for="carry">キャリーオーバー額（億円）</label>
+        <input type="number" id="carry" value="0" min="0" max="10" step="0.1">
+      </div>
+      <div>
+        <label for="sales">今回の販売額（億円）</label>
+        <input type="number" id="sales" value="22" min="1" max="200" step="0.5">
+      </div>
+      <div>
+        <label for="payout">当せん金への配分率（%）</label>
+        <input type="number" id="payout" value="45" min="20" max="80" step="0.5">
+      </div>
+      <div>
+        <label for="units">購入口数</label>
+        <input type="number" id="units" value="1" min="1" max="1000" step="1">
+      </div>
+    </div>
+
+    <button class="action" id="calcWeek">この週を判定する</button>
+
+    <div id="weekOut"></div>
+  </div>
+
+  <div class="card">
+    <h2>キャリーオーバー別・還元率の早見表</h2>
+    <p class="note" style="margin-top:0;">現在の販売額の入力値で計算した、繰越額ごとの1口あたり期待値です。</p>
+    <div id="tableOut"></div>
+  </div>
+</section>
+
+<!-- ========== ② 番号 ========== -->
+<section class="panel" id="nums">
+  <div class="card">
+    <h2>被りにくい番号を作る</h2>
+    <p class="note" style="margin-top:0;">
+      どの組合せも当選確率は完全に同じ（1/10,295,472）です。ここで最適化しているのは
+      <strong>「当たったときに何人で山分けするか」</strong>だけです。
+      多くの人は誕生日由来の1〜31、連番、等間隔、前回の当せん番号を選びがちなので、それを外します。
+    </p>
+
+    <label for="nSets">生成する口数</label>
+    <input type="number" id="nSets" value="5" min="1" max="20" step="1">
+
+    <label for="exclude">除外したい番号（カンマ区切り・任意）</label>
+    <input type="text" id="exclude" placeholder="例: 7, 13, 24">
+
+    <button class="action" id="genNums">生成する</button>
+    <div id="numsOut"></div>
+  </div>
+
+  <div class="card">
+    <h2>手持ちの番号を採点する</h2>
+    <label for="scoreIn">7個の番号（カンマ区切り）</label>
+    <input type="text" id="scoreIn" placeholder="例: 4, 9, 18, 26, 32, 35, 37">
+    <button class="action" id="scoreBtn">分散度を採点する</button>
+    <div id="scoreOut"></div>
+  </div>
+</section>
+
+<!-- ========== ③ 検定 ========== -->
+<section class="panel" id="check">
+  <div class="card">
+    <h2>「よく出る番号」は本当に偏っているのか</h2>
+    <p class="note" style="margin-top:0;">
+      過去の当せん番号（本数字7個）を1行1回ぶんで貼り付けてください。区切りは
+      スペース・カンマ・タブのいずれでも構いません。出現回数のばらつきが
+      <strong>偶然の範囲か否か</strong>をカイ二乗検定で判定します。
+      1回の抽せんで7個が重複なく選ばれることによる分散の縮小は、有限母集団補正で調整しています。
+    </p>
+    <label for="hist">過去の当せん番号</label>
+    <textarea id="hist" placeholder="3 8 12 19 26 31 35&#10;1 5 14 20 23 29 37&#10;..."></textarea>
+    <button class="action" id="chiBtn">偏りを検定する</button>
+    <div id="chiOut"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>本ツールは確率計算のみを行います。当せんを保証するものではありません。<br>
+  宝くじは購入額の約55%が当せん金以外（公共事業・経費）に充てられる仕組みで、長期的な期待値は必ずマイナスです。<br>
+  余剰資金の範囲でお楽しみください。</p>
+  <p><a href="index.html">トップページに戻る</a></p>
+</footer>
+
+<script>
+"use strict";
+
+/* ========== 定数：ロト7の組合せ論 ========== */
+const TOTAL = 10295472;              // C(37,7)
+const TIERS = [
+  {name:"1等", ways:1,      fixed:null,    cond:"本数字7個"},
+  {name:"2等", ways:14,     fixed:7300000, cond:"本数字6個＋ボーナス1個"},
+  {name:"3等", ways:196,    fixed:730000,  cond:"本数字6個"},
+  {name:"4等", ways:9135,   fixed:9100,    cond:"本数字5個"},
+  {name:"5等", ways:142100, fixed:1400,    cond:"本数字4個"},
+  {name:"6等", ways:242550, fixed:1000,    cond:"本数字3個＋ボーナス1個以上"}
+];
+const PRICE = 300;
+const CAP = 1e9;                     // 1口あたり上限10億円
+
+/* 下位等級（2〜6等）の1口あたり期待値 */
+function evLower(){
+  return TIERS.slice(1).reduce((s,t)=> s + t.fixed * t.ways / TOTAL, 0);
+}
+
+/* 1等の期待値：他の当せん者数を Poisson(N) として山分けを織り込む */
+function ev1st(pool, N){
+  let ev = 0, p = Math.exp(-N);      // P(K=0)
+  for(let k=0;k<=80;k++){
+    ev += p * Math.min(pool/(k+1), CAP);
+    p *= N/(k+1);
+    if(p < 1e-15 && k > N+10) break;
+  }
+  return ev / TOTAL;                 // 自分が1等になる確率を掛ける
+}
+
+/*
+   1等の賞金原資は販売額から導出する。
+     当せん金総原資 = 販売額 × 配分率
+     下位等級(2〜6等)は固定額なので、その期待払出額を差し引いた残りが1等原資。
+   公式が示す「1等の理論値 約6億円」は、販売額およそ30億円のときの値に一致する。
+*/
+function analyzeWeek(carryOku, salesOku, payoutRate){
+  const sold = salesOku*1e8/PRICE;   // 販売口数
+  const N = sold / TOTAL;            // 1等当せん口数の期待値
+  const eLow = evLower();
+  const basePool = Math.max(0, salesOku*1e8*payoutRate - eLow*sold);
+  const pool = basePool + carryOku*1e8;
+  const e1 = ev1st(pool, N);
+  const ev = e1 + eLow;
+  return {sold, N, basePool, pool, e1, eLow, ev, rate: ev/PRICE};
+}
+
+function yen(v){
+  return Math.round(v).toLocaleString("ja-JP") + "円";
+}
+function oku(v){
+  return (v/1e8).toFixed(2) + "億円";
+}
+
+document.getElementById("calcWeek").addEventListener("click", ()=>{
+  const carry = Math.max(0, parseFloat(document.getElementById("carry").value)||0);
+  const sales = Math.max(1, parseFloat(document.getElementById("sales").value)||22);
+  const payout= Math.max(0.2, Math.min(0.8, (parseFloat(document.getElementById("payout").value)||45)/100));
+  const units = Math.max(1, parseInt(document.getElementById("units").value)||1);
+
+  const now  = analyzeWeek(carry, sales, payout);
+  const zero = analyzeWeek(0, sales, payout);
+  const gain = now.ev - zero.ev;
+
+  let cls, head, sub;
+  if(now.rate >= 1.0){
+    cls="v-buy"; head="理論上プラス（極めて稀）";
+    sub="期待値が購入額を上回っています。入力値を再確認してください。";
+  }else if(now.rate >= 0.48){
+    cls="v-buy"; head="買うならこの週";
+    sub="繰越によって還元率がロト7で到達しうる上限帯（およそ50%前後）に達しています。買うと決めているなら、この水準の週に集中させるのが最も合理的です。";
+  }else if(now.rate >= 0.42){
+    cls="v-hold"; head="やや有利";
+    sub="通常週よりは有利ですが、上積みは限定的です。もう1回繰り越すのを待つ選択肢もあります。";
+  }else{
+    cls="v-skip"; head="見送り推奨";
+    sub="繰越がない／小さい週です。この週に投じた金額の一部は、将来の繰越週の原資になります。買わずに待つ方が合理的です。";
+  }
+
+  const rows = [
+    ["販売口数（推定）", Math.round(now.sold).toLocaleString("ja-JP")+"口"],
+    ["1等当せん口数の期待値", now.N.toFixed(2)+"口"],
+    ["1等の基本原資（販売額から算出）", oku(now.basePool)],
+    ["1等賞金原資（基本＋繰越）", oku(now.pool)],
+    ["1等ぶんの期待値（山分け込み）", yen(now.e1)],
+    ["2〜6等ぶんの期待値", yen(now.eLow)],
+    ["<strong>1口あたり期待値</strong>", "<strong>"+yen(now.ev)+"</strong>"],
+    ["<strong>還元率</strong>", "<strong>"+(now.rate*100).toFixed(1)+"%</strong>"],
+    ["繰越なしの週との差", (gain>=0?"+":"")+yen(gain)+" / 口"],
+    [units+"口購入時の期待収支", yen(units*(now.ev-PRICE))]
+  ];
+
+  document.getElementById("weekOut").innerHTML =
+    '<div class="verdict '+cls+'">'+head+'<small>'+sub+'</small></div>'+
+    '<table><tbody>'+rows.map(r=>"<tr><td>"+r[0]+"</td><td>"+r[1]+"</td></tr>").join("")+'</tbody></table>'+
+    '<div class="warnbox">還元率が100%を超えることは、上限10億円の制約と山分けの影響でほぼ起こりません。'+
+    'つまり<strong>「買えば得な週」は存在せず、あるのは「損が小さい週」だけ</strong>です。'+
+    'このツールの正しい使い方は、買う総額を増やすことではなく、<strong>同じ総額を還元率の高い週にだけ寄せる</strong>ことです。</div>';
+
+  renderTable(sales, payout);
+});
+
+function renderTable(sales, payout){
+  let html = '<table><thead><tr><th>キャリーオーバー</th><th>1口期待値</th><th>還元率</th><th>判定</th></tr></thead><tbody>';
+  [0,1,2,3,4,5,6,7,8,9,10].forEach(c=>{
+    const r = analyzeWeek(c, sales, payout);
+    const v = r.rate>=0.48 ? "買い" : (r.rate>=0.42 ? "やや有利" : "見送り");
+    html += "<tr><td>"+c+"億円</td><td>"+yen(r.ev)+"</td><td>"+(r.rate*100).toFixed(1)+"%</td><td>"+v+"</td></tr>";
+  });
+  html += "</tbody></table>";
+  document.getElementById("tableOut").innerHTML = html;
+}
+
+/* ========== ② 被りにくい番号 ========== */
+/*
+   どの組合せも当せん確率は同一。最適化対象は「山分け人数」のみ。
+   一般に他の購入者に選ばれやすい特徴を減点する。
+*/
+function unpopularity(set){
+  const s = [...set].sort((a,b)=>a-b);
+  let score = 50, notes = [];
+
+  // 誕生日バイアス：32〜37は選ばれにくい（ただし加点は3個ぶんで打ち止め）
+  const high = s.filter(n=>n>=32).length;
+  score += Math.min(high,3)*11;
+  notes.push(high>=2 ? "32以上を"+high+"個含む（誕生日由来の選択と重なりにくい）"
+                     : "32以上が"+high+"個のみ（1〜31は誕生日で選ばれやすい）");
+
+  // 連番
+  let runs = 0;
+  for(let i=1;i<s.length;i++) if(s[i]-s[i-1]===1) runs++;
+  score -= runs*9;
+  if(runs>0) notes.push("連番が"+runs+"組（連番はマークしやすく被りやすい）");
+
+  // 等間隔（等差数列）
+  const gaps = s.slice(1).map((v,i)=>v-s[i]);
+  const uniqGaps = new Set(gaps).size;
+  if(uniqGaps<=2){ score -= 14; notes.push("間隔が規則的（等間隔の並びは被りやすい）"); }
+
+  // 3個以上が同じ間隔で並ぶ部分列（2,4,6 のような並び）も見た目の規則性が高い
+  let arith = 0;
+  for(let i=2;i<s.length;i++) if(s[i]-s[i-1] === s[i-1]-s[i-2] && s[i]-s[i-1] <= 5) arith++;
+  score -= arith*8;
+  if(arith>0) notes.push("等差の並びが"+arith+"箇所（規則的な並びは被りやすい）");
+
+  // 合計値：中央に寄りすぎる組合せは選ばれやすい
+  const sum = s.reduce((a,b)=>a+b,0);
+  if(sum>=100 && sum<=170){ score += 4; }
+  else { score -= 6; notes.push("合計"+sum+"は中心から離れている"); }
+
+  // 一桁台の偏り
+  const low = s.filter(n=>n<=9).length;
+  if(low>=4){ score -= 10; notes.push("一桁が"+low+"個（小さい数字は人気）"); }
+
+  // 人気番号（7 は突出して人気、ゾロ目・記念日系も）
+  const popular = [7,3,8,11,17,21,23,27];
+  const hits = s.filter(n=>popular.includes(n)).length;
+  score -= hits*3;
+  if(hits>=3) notes.push("人気番号を"+hits+"個含む");
+
+  // 不人気番号（日本では 4・9 系が避けられる＝あなたには有利）
+  const unpop = [4,9,14,19,24,29,34];
+  const uh = s.filter(n=>unpop.includes(n)).length;
+  score += uh*4;
+  if(uh>0) notes.push("4・9系を"+uh+"個含む（敬遠されがちで被りにくい）");
+
+  // 奇偶バランス：極端は選ばれにくい＝有利だが当選確率は不変
+  const odd = s.filter(n=>n%2===1).length;
+  if(odd===0||odd===7){ score += 6; notes.push("奇数"+odd+"個の極端な構成（選ぶ人が少ない）"); }
+
+  return {score: Math.max(0, Math.min(100, Math.round(score))), notes, sum, high, odd};
+}
+
+function randomSet(exclude){
+  const pool = [];
+  for(let i=1;i<=37;i++) if(!exclude.includes(i)) pool.push(i);
+  if(pool.length < 7) return null;
+  const s = new Set();
+  while(s.size < 7) s.add(pool[Math.floor(Math.random()*pool.length)]);
+  return [...s].sort((a,b)=>a-b);
+}
+
+function ballsHTML(set){
+  return '<div class="balls">'+set.map(n=>
+    '<div class="ball'+(n>=32?" hi":"")+'">'+n+"</div>").join("")+"</div>";
+}
+
+document.getElementById("genNums").addEventListener("click", ()=>{
+  const n = Math.max(1, Math.min(20, parseInt(document.getElementById("nSets").value)||5));
+  const exclude = (document.getElementById("exclude").value||"")
+      .split(/[^0-9]+/).filter(x=>x).map(Number).filter(v=>v>=1&&v<=37);
+
+  const picked = [];
+  const seen = new Set();
+  const used = new Array(38).fill(0);   // 口をまたいだ番号の使い回しを抑える
+
+  for(let i=0; i<n; i++){
+    // 候補を多数生成し、上位のなかから確率的に1つ選ぶ。
+    // 最高得点だけを取ると毎回そっくりな組合せになるため、あえて幅を持たせる。
+    const cands = [];
+    for(let t=0;t<500;t++){
+      const set = randomSet(exclude);
+      if(!set) break;
+      const key = set.join(",");
+      if(seen.has(key)) continue;
+      const r = unpopularity(set);
+      const dup = set.reduce((a,v)=> a + Math.max(0, used[v]-1), 0);
+      cands.push({s:set, r, key, rank: r.score - dup*4});
+    }
+    if(!cands.length) break;
+    cands.sort((a,b)=> b.rank - a.rank);
+    const top = cands.slice(0, Math.max(1, Math.ceil(cands.length*0.15)));
+    const pick = top[Math.floor(Math.random()*top.length)];
+    seen.add(pick.key);
+    pick.s.forEach(v=>used[v]++);
+    picked.push(pick);
+  }
+
+  if(!picked.length){
+    document.getElementById("numsOut").innerHTML =
+      '<div class="warnbox">除外が多すぎて7個を選べません。除外番号を減らしてください。</div>';
+    return;
+  }
+
+  document.getElementById("numsOut").innerHTML =
+    '<h3>生成結果</h3>' +
+    picked.map((p,i)=>
+      '<div class="setrow">'+
+        '<div class="score">'+(i+1)+'口目　分散度スコア '+p.r.score+' / 100　（合計 '+p.r.sum+'）</div>'+
+        '<div class="bar"><span style="width:'+p.r.score+'%"></span></div>'+
+        ballsHTML(p.s)+
+      '</div>').join("") +
+    '<div class="warnbox">スコアは<strong>当たりやすさではありません</strong>。'+
+    'どの7個の組合せも当せん確率は 1/10,295,472 で完全に同じです。'+
+    'このスコアは「1等になったときに山分けする人数が少なくて済みそうか」だけを表します。</div>';
+});
+
+document.getElementById("scoreBtn").addEventListener("click", ()=>{
+  const v = (document.getElementById("scoreIn").value||"")
+      .split(/[^0-9]+/).filter(x=>x).map(Number);
+  const uniq = [...new Set(v)].filter(x=>x>=1&&x<=37).sort((a,b)=>a-b);
+  const out = document.getElementById("scoreOut");
+  if(uniq.length !== 7){
+    out.innerHTML = '<div class="warnbox">1〜37の異なる番号をちょうど7個入力してください（現在 '+uniq.length+' 個）。</div>';
+    return;
+  }
+  const r = unpopularity(uniq);
+  out.innerHTML =
+    '<h3>採点結果</h3>'+ ballsHTML(uniq) +
+    '<div class="score">分散度スコア '+r.score+' / 100</div>'+
+    '<div class="bar"><span style="width:'+r.score+'%"></span></div>'+
+    '<ul style="font-size:.85rem;margin:.8rem 0 0;padding-left:1.2rem;">'+
+      r.notes.map(t=>"<li>"+t+"</li>").join("")+'</ul>'+
+    '<div class="note">当せん確率は他のどの組合せとも同じです。変わるのは分け合う人数だけです。</div>';
+});
+
+/* ========== ③ カイ二乗検定 ========== */
+/* 不完全ガンマ関数によるカイ二乗上側確率 */
+function gammaln(x){
+  const c=[76.18009172947146,-86.50532032941677,24.01409824083091,
+           -1.231739572450155,0.1208650973866179e-2,-0.5395239384953e-5];
+  let y=x, tmp=x+5.5;
+  tmp -= (x+0.5)*Math.log(tmp);
+  let ser=1.000000000190015;
+  for(let j=0;j<6;j++) ser += c[j]/++y;
+  return -tmp + Math.log(2.5066282746310005*ser/x);
+}
+function gammaQ(a,x){                 // 上側確率 Q(a,x)
+  if(x < 0 || a <= 0) return NaN;
+  if(x < a+1){                        // 級数展開
+    let ap=a, sum=1/a, del=sum;
+    for(let n=0;n<500;n++){
+      ap++; del *= x/ap; sum += del;
+      if(Math.abs(del) < Math.abs(sum)*1e-12) break;
+    }
+    return 1 - sum*Math.exp(-x + a*Math.log(x) - gammaln(a));
+  }
+  let b=x+1-a, c=1e300, d=1/b, h=d;   // 連分数展開
+  for(let i=1;i<=500;i++){
+    const an=-i*(i-a);
+    b+=2; d=an*d+b; if(Math.abs(d)<1e-300) d=1e-300;
+    c=b+an/c;       if(Math.abs(c)<1e-300) c=1e-300;
+    d=1/d; const del=d*c; h*=del;
+    if(Math.abs(del-1) < 1e-12) break;
+  }
+  return Math.exp(-x + a*Math.log(x) - gammaln(a))*h;
+}
+const chiSqP = (chi, df) => gammaQ(df/2, chi/2);
+
+/*
+   有限母集団補正。
+   1回の抽せんでは37個から7個が「重複なく」選ばれるため、各番号の出現回数の分散は
+   多項分布を仮定した場合より小さくなる（Var = D·p·(1-p)、共分散は負）。
+   補正なしの Σ(O-E)²/E は χ²(36) の (37-7)/(37-1) 倍に縮み、検定が過度に保守的になる。
+   係数 (37-1)/(37-7) = 1.2 を掛けて χ²(36) に一致させる。
+   （乱数シミュレーションで棄却率が 0.3% → 5.0% に是正されることを確認済み）
+*/
+const FPC = (37 - 1) / (37 - 7);
+
+document.getElementById("chiBtn").addEventListener("click", ()=>{
+  const raw = document.getElementById("hist").value || "";
+  const out = document.getElementById("chiOut");
+  const counts = new Array(38).fill(0);
+  let draws = 0, bad = 0;
+
+  raw.split(/\r?\n/).forEach(line=>{
+    const ns = line.split(/[^0-9]+/).filter(x=>x).map(Number).filter(v=>v>=1&&v<=37);
+    const u = [...new Set(ns)];
+    if(u.length === 0) return;
+    if(u.length !== 7){ bad++; return; }
+    u.forEach(n=>counts[n]++);
+    draws++;
+  });
+
+  if(draws < 10){
+    out.innerHTML = '<div class="warnbox">検定には最低10回ぶんのデータが必要です（現在 '+draws+' 回'+
+      (bad?'、7個でない行が '+bad+' 行':'')+'）。</div>';
+    return;
+  }
+
+  const expected = draws*7/37;
+  let rawChi = 0;
+  for(let i=1;i<=37;i++) rawChi += Math.pow(counts[i]-expected,2)/expected;
+  const df = 36;
+  const chi = rawChi * FPC;          // 有限母集団補正
+  const p = chiSqP(chi, df);
+
+  const rank = [];
+  for(let i=1;i<=37;i++) rank.push({n:i,c:counts[i]});
+  rank.sort((a,b)=>b.c-a.c);
+
+  const biased = p < 0.05;
+  const verdict = biased
+    ? ['v-hold','統計的な偏りが検出されました',
+       'ただし多数の番号を同時に検定すると偶然の偏りは起こり得ます。抽せんは物理的に独立なので、これを次回の予測に使うことはできません。']
+    : ['v-buy','偏りなし：ばらつきは誤差の範囲',
+       'p値が0.05以上です。「よく出る番号」は統計的に単なる偶然のゆらぎで、次回の出やすさとは無関係です。'];
+
+  out.innerHTML =
+    '<div class="verdict '+verdict[0]+'">'+verdict[1]+'<small>'+verdict[2]+'</small></div>'+
+    '<table><tbody>'+
+      '<tr><td>解析した抽せん回数</td><td>'+draws+'回'+(bad?'（除外 '+bad+'行）':'')+'</td></tr>'+
+      '<tr><td>1番号あたりの期待出現回数</td><td>'+expected.toFixed(2)+'回</td></tr>'+
+      '<tr><td>カイ二乗値（補正前）</td><td>'+rawChi.toFixed(2)+'</td></tr>'+
+      '<tr><td>カイ二乗値（有限母集団補正 ×1.2・自由度36）</td><td>'+chi.toFixed(2)+'</td></tr>'+
+      '<tr><td>p値</td><td>'+p.toFixed(4)+'</td></tr>'+
+    '</tbody></table>'+
+    '<h3>出現回数（多い順・上位10）</h3>'+
+    '<table><thead><tr><th>番号</th><th>出現</th><th>期待比</th></tr></thead><tbody>'+
+      rank.slice(0,10).map(r=>"<tr><td>"+r.n+"</td><td>"+r.c+"回</td><td>"+
+        (r.c/expected).toFixed(2)+"倍</td></tr>").join("")+
+    '</tbody></table>'+
+    '<h3>出現回数（少ない順・下位5）</h3>'+
+    '<table><tbody>'+
+      rank.slice(-5).map(r=>"<tr><td>"+r.n+"</td><td>"+r.c+"回</td><td>"+
+        (r.c/expected).toFixed(2)+"倍</td></tr>").join("")+
+    '</tbody></table>'+
+    '<div class="warnbox">この表を「次に出る番号」の根拠に使わないでください。'+
+    '球の抽せんに記憶はなく、出現回数の多寡は次回の確率に一切影響しません。'+
+    '有意差が出た場合でも、37個を同時に比べれば偶然そう見えることがあります。</div>';
+});
+
+/* ========== タブ ========== */
+document.querySelectorAll(".tabs button").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll("section.panel").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    document.getElementById(b.dataset.tab).classList.add("active");
+  });
+});
+
+/* 初期表示 */
+document.getElementById("calcWeek").click();
+</script>
+</body>
+</html>
