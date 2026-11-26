@@ -1,0 +1,52 @@
+{
+  "_説明": "ここを書き換えるだけで名前・日付・写真・文章を差し替えられます。photo が空欄のときはサンプル画像が自動で入ります。",
+
+  "couple_en": "Kenta & Misaki",
+  "couple_caps": "KENTA & MISAKI",
+  "date": "2026.11.26",
+  "event_en": "WEDDING RECEPTION",
+
+  "groom": {
+    "label": "Groom",
+    "name_ja": "田中 健太",
+    "name_en": "Kenta Tanaka",
+    "initial": "K",
+    "photo": "",
+    "profile": [
+      ["誕生日", "1994.05.12"],
+      ["出身地", "神奈川県 横浜市"],
+      ["趣味", "キャンプ・コーヒー"],
+      ["相手の好きなところ", "いつも笑顔でいてくれるところ"]
+    ]
+  },
+
+  "bride": {
+    "label": "Bride",
+    "name_ja": "佐藤 美咲",
+    "name_en": "Misaki Sato",
+    "initial": "M",
+    "photo": "",
+    "profile": [
+      ["誕生日", "1996.08.24"],
+      ["出身地", "静岡県 静岡市"],
+      ["趣味", "カフェ巡り・お菓子作り"],
+      ["相手の好きなところ", "優しくて頼りになるところ"]
+    ]
+  },
+
+  "message1": ["本日はお忙しい中", "私たちの結婚披露宴に", "お越しいただき", "誠にありがとうございます"],
+  "message2": ["ささやかではございますが", "心ばかりのおもてなしを", "ご用意いたしました"],
+  "message3": ["今日という日を", "大切な皆さまと迎えられることを", "心より嬉しく思います"],
+  "coming": ["まもなく 新郎新婦の入場です", "温かい拍手でお迎えください"],
+  "closing": "どうぞ最後までお楽しみください",
+
+  "story": [
+    {"date": "2019.04", "title": "出会い", "en": "First meet", "photo": "", "sample": "sakura"},
+    {"date": "2021.08", "title": "はじめての旅行", "en": "First trip", "photo": "", "sample": "sunset"},
+    {"date": "2025.12", "title": "プロポーズ", "en": "Proposal", "photo": "", "sample": "night"},
+    {"date": "2026.06", "title": "前撮り", "en": "Photo wedding", "photo": "", "sample": "flowers"}
+  ],
+
+  "bgm": "",
+  "watermark": "SAMPLE"
+}
