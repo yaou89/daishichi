@@ -53,7 +53,7 @@ python3 make_movie_luxe.py --config 田中様.json --out 納品_田中様.mp4
 python3 make_movie_luxe.py --config 田中様.json --preview 8 30 47    # 静止画だけで確認
 ```
 
-4コアのPCで書き出しは10分前後かかります（高画質設定のため）。
+4コアのPCで書き出しは10分前後かかります（高画質設定のため）。完成ファイルは約70MBです。
 
 ### 必要なもの
 
