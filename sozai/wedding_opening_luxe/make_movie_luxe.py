@@ -655,7 +655,7 @@ def build(cfg):
     v = np.hypot((xx - W / 2) / (W / 2), (yy - H / 2) / (H / 2))
     A["vig"] = (1 - 0.55 * np.clip(v - 0.45, 0, 1) ** 1.6)[..., None].astype(np.float32)
     rng = np.random.default_rng(9)
-    A["grain"] = [rng.standard_normal((H, W, 1)).astype(np.float32) for _ in range(6)]
+    A["grain"] = [rng.standard_normal((H, W, 1)).astype(np.float32)]
     amber = [hexc("#E8B86A"), hexc("#F3D49A"), hexc("#C98F4A")]
     A["bok_far"] = disk_field(W + 500, H + 300, 45, 50, 120, amber, 0.03, 0.07, 31, 10)
     A["bok_mid"] = disk_field(W + 900, H + 300, 70, 10, 30, amber, 0.05, 0.12, 32, 2.5)
@@ -1041,7 +1041,7 @@ def render(t):
     sc_final(fr, t)
     draw_particles(fr, t, 1.0 - 0.5 * lb_story)
     fr *= A["vig"]
-    fr += A["grain"][int(t * FPS) % 6] * 0.018
+    fr += A["grain"][0] * 0.014  # 粒子は固定（毎フレーム変えるとファイルが巨大になるため）
     # 冒頭は暗闇から、最後は暗闇へ
     k = ramp(t, 0, 1.6) * (1 - ramp(t, 88.4, 90.0))
     if k < 1:
@@ -1055,7 +1055,7 @@ def render(t):
 def encode(args):
     idx, f0, f1, path = args
     cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS),
-           "-i", "-", "-c:v", "libx264", "-preset", "slow", "-crf", "17", "-tune", "film", "-pix_fmt", "yuv420p",
+           "-i", "-", "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-tune", "film", "-pix_fmt", "yuv420p",
            "-g", str(FPS * 2), path]
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     for f in range(f0, f1):
